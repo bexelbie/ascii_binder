@@ -16,6 +16,7 @@ require 'pandoc-ruby'
 require 'pathname'
 require 'sitemap_generator'
 require 'trollop'
+require 'wikicloth'
 require 'yaml'
 
 include AsciiBinder::Helpers
@@ -145,9 +146,9 @@ module AsciiBinder
     def find_topic_files
       file_list = []
       Find.find(docs_root_dir).each do |path|
-        # Only consider .adoc and .md files and ignore README, and anything in
+        # Only consider .adoc, .md and .wiki files and ignore README, and anything in
         # directories whose names begin with 'old' or '_' (underscore)
-        next if path.nil? or not (path =~ /.*\.adoc/ or path =~ /.*\.md/) or path =~ /README/ or path =~ /\/old\// or path =~ /\/_/
+        next if path.nil? or not (path =~ /.*\.(adoc|md|wiki)/) or path =~ /README/ or path =~ /\/old\// or path =~ /\/_/
         src_path = Pathname.new(path).sub(docs_root_dir,'').to_s
         next if src_path.split('/').length < 3
         file_list << src_path
@@ -462,6 +463,9 @@ module AsciiBinder
       if File.extname(topic.source_path) == '.md'
         topic_html = Kramdown::Document.new(topic_content).to_html # add back options see below
         article_title = "" # There is no article title pass into markdown templates
+      elsif File.extname(topic.source_path) == '.wiki'
+        topic_html = WikiCloth::Parser.new(:data => topic_content, :auto_toc => false, :noedit => true).to_html # add back options see below
+        article_title = "" # There is no article title pass into wiki templates
       else
         doc = Asciidoctor.load topic_content, :header_footer => false, :safe => :unsafe, :attributes => page_attrs
         article_title = doc.doctitle || topic.name

@@ -2,7 +2,7 @@
 
 Welcome to the AsciiBinder Docs Management System. This welcome page is provided as a template for the topic pages that you will create for your software project.
 
-AsciiBinder can process both [AsciiDoc](index.html) and Markdown files in the same repository
+AsciiBinder can process [AsciiDoc](index.html), Markdown, and [Wikitext](wikitext.html) files in the same repository
 
 ## Need Help?
 

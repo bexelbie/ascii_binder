@@ -33,7 +33,7 @@ module AsciiBinder
         if is_group?
           this_step = dir
         elsif is_topic?
-            if File.extname(file) == '.adoc' or File.extname(file) == '.md'
+          if File.extname(file) == '.adoc' or File.extname(file) == '.md' or File.extname(file) == '.wiki'
             this_step = file
           else
             this_step = "#{file}.adoc"
@@ -47,8 +47,10 @@ module AsciiBinder
       if is_topic?
         if File.extname(repo_path) == '.adoc'
           @repo_path_html = File.join(File.dirname(repo_path),File.basename(repo_path, '.adoc')) + ".html"
-        else
+        elsif File.extname(repo_path) == '.md'
           @repo_path_html = File.join(File.dirname(repo_path),File.basename(repo_path, '.md')) + ".html"
+        elsif File.extname(repo_path) == '.wiki'
+          @repo_path_html = File.join(File.dirname(repo_path),File.basename(repo_path, '.wiki')) + ".html"
         end
       else
         @repo_path_html = repo_path
